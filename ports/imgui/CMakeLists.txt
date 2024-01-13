@@ -8,6 +8,8 @@ if(APPLE)
     enable_language(OBJCXX)
 endif()
 
+set(IMGUI_USE_DARK_THEME ON)
+
 add_library(${PROJECT_NAME} "")
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 target_include_directories(
@@ -17,12 +19,17 @@ target_include_directories(
         $<INSTALL_INTERFACE:include>
 )
 
+if(IMGUI_USE_DARK_THEME)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC SPECTRUM_USE_DARK_THEME)
+endif()
+
 target_sources(
     ${PROJECT_NAME}
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/imgui.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/imgui_demo.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/imgui_draw.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui_spectrum.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/imgui_tables.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/imgui_widgets.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/misc/cpp/imgui_stdlib.cpp
@@ -34,10 +41,6 @@ if(IMGUI_BUILD_ALLEGRO5_BINDING)
     find_package(Allegro CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE Allegro::allegro Allegro::allegro_ttf Allegro::allegro_font Allegro::allegro_main)
     target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/backends/imgui_impl_allegro5.cpp)
-endif()
-
-if(IMGUI_BUILD_ANDROID_BINDING)
-    target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/backends/imgui_impl_android.cpp)
 endif()
 
 if(IMGUI_BUILD_DX9_BINDING)
@@ -166,6 +169,7 @@ endforeach()
 if(NOT IMGUI_SKIP_HEADERS)
     install(FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/imgui.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui_spectrum.h
         ${CMAKE_CURRENT_SOURCE_DIR}/imconfig.h
         ${CMAKE_CURRENT_SOURCE_DIR}/imgui_internal.h
         ${CMAKE_CURRENT_SOURCE_DIR}/imstb_textedit.h
@@ -177,10 +181,6 @@ if(NOT IMGUI_SKIP_HEADERS)
 
     if(IMGUI_BUILD_ALLEGRO5_BINDING)
         install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/backends/imgui_impl_allegro5.h DESTINATION include)
-    endif()
-
-    if (IMGUI_BUILD_ANDROID_BINDING)
-        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/backends/imgui_impl_android.h DESTINATION include)
     endif()
 
     if(IMGUI_BUILD_DX9_BINDING)

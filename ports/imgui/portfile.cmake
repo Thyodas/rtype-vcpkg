@@ -2,12 +2,12 @@ vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
 if ("docking-experimental" IN_LIST FEATURES)
     vcpkg_from_github(
-        OUT_SOURCE_PATH SOURCE_PATH
-        REPO ocornut/imgui
-        REF "v${VERSION}-docking"
-        SHA512 a700d6e4daa2f2d2bc0a61f96c813da03f9d0d6508bc077679d1acea08f546c913d2409008437dea5d993657f10a9e7077725d65bc55b7fb14d7ff6b52ff05d4
-        HEAD_REF docking
-    )
+       OUT_SOURCE_PATH SOURCE_PATH
+       REPO adobe/imgui
+       REF 49d3ce20dfecc25919dfd6ca4cb4b10cd6e30690
+       SHA512 c6faf47e2efdd839b234a3c7dadc203a74abbf9f7a87757311914f4ba5d2f2ba0800449d1de9a668195e8b27cb15786453457f5627235b530f8e426e160c0e4a
+       HEAD_REF docking_v1.90
+       )
 else()
     vcpkg_from_github(
         OUT_SOURCE_PATH SOURCE_PATH
@@ -24,7 +24,6 @@ file(COPY "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt" DESTINATION "${SOURCE_PATH}
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     FEATURES 
     allegro5-binding            IMGUI_BUILD_ALLEGRO5_BINDING
-    android-binding             IMGUI_BUILD_ANDROID_BINDING
     dx9-binding                 IMGUI_BUILD_DX9_BINDING
     dx10-binding                IMGUI_BUILD_DX10_BINDING
     dx11-binding                IMGUI_BUILD_DX11_BINDING
